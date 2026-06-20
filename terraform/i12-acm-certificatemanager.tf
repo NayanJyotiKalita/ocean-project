@@ -6,7 +6,7 @@ module "acm" {
   zone_id     = data.aws_route53_zone.mydomain.zone_id
 
   subject_alternative_names = [
-    "*.",
+    "*.ocean-across.com",
   ]
 
   validation_method = "DNS"

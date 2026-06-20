@@ -39,7 +39,7 @@ module "ec2_private_app1" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = var.instance_type
   # key_name               = var.keypair   --> not needed as we are using SSM
-  user_data_base64       = base64encode(file("app-install-1-companies.sh"))
+  user_data_base64       = base64encode(file("app-install.sh"))
   iam_instance_profile   = aws_iam_instance_profile.company_profile.name
 
   for_each               = toset([for i in range(var.private_instance_count) : tostring(i)])

@@ -98,16 +98,16 @@ module "vpc" {
     {
       rule_number = 100
       rule_action = "allow"
-      from_port   = 80
-      to_port     = 80
+      from_port   = 8080
+      to_port     = 8080
       protocol    = "tcp"
       cidr_block  = var.vpc_public_subnets[0] # Allow ALB traffic from Public Subnet A
     },
     {
       rule_number = 110
       rule_action = "allow"
-      from_port   = 80
-      to_port     = 80
+      from_port   = 8080
+      to_port     = 8080
       protocol    = "tcp"
       cidr_block  = var.vpc_public_subnets[1] # Allow ALB traffic from Public Subnet B
     },

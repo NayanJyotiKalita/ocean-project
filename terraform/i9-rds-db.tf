@@ -1,4 +1,4 @@
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "rds-db" {
   allocated_storage    = 10
   db_name              = "my-rds-db"
   identifier           = "ocean-db"

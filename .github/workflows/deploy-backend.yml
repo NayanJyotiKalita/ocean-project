@@ -1,0 +1,53 @@
+name: Backend Pipeline
+
+# REQUIREMENT 1: Runs on every push to the main branch
+on:
+    push:
+        branches:
+            - main
+        # REQUIREMENT: Independent team deployments (Frontend/AI won't trigger this)
+        paths:
+            - 'backend/**'   # Triggers as soons as anything in side the backend is changed
+
+jobs:
+    build-test-deploy:
+        runs-on: ubuntu-latest
+
+        # Requirement 4: Handles environment-specific configurations
+        environment: production
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v6
+
+            # Requirement 2: Builds and test the application
+            - name: Run Tests
+              run: |
+                cd backend
+                python -m unittest test-app.py
+
+            # Authenticate with AWS to send the deployment command
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v6
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}             # No Hard-Coded Secrets
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     # No Hard-Coded Secrets
+                aws-region: eu-west-2
+            
+            - name: Deploy to EC2 via SSM
+              run: |
+                aws ssm send-command \
+                  --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \            
+                  --document-name "AWS-RunShellScript" \
+                  --parameters 'commands=[
+                    "sudo dnf install -y git docker",
+                    "sudo systemctl start docker",
+                    "rm -rf ocean-assignment || true",
+                    "git clone https://github.com/NayanJyotiKalita/ocean-project.git ocean-assignment",
+                    "cd ocean-assignment/backend",
+                    "sudo docker build -t backend-app .",
+                    "sudo docker stop backend || true",
+                    "sudo docker rm backend || true",
+                    "sudo docker run -d --name backend -p 8080:8080 -e ENVIRONMENT=${{ vars.ENV_NAME }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} backend-app"
+                    ]'
+

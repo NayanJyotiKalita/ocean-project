@@ -40,7 +40,7 @@ module "ec2_private_app2" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = var.instance_type
   # key_name               = var.keypair 
-  user_data_base64       = base64encode(file("app-install-2-bureaus.sh"))
+  user_data_base64       = base64encode(file("app-install.sh"))
   iam_instance_profile   = aws_iam_instance_profile.bureaus_profile.name 
 
   for_each               = toset([for i in range(var.private_instance_count) : tostring(i)])

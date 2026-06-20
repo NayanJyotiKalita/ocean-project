@@ -41,7 +41,7 @@ module "ec2_private_app3" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = var.instance_type
   # key_name               = var.keypair 
-  user_data              = base64encode(file("app-install-3-employees.sh"))
+  user_data              = base64encode(file("app-install.sh"))
  
   root_block_device = {
     encrypted  = true      # Encryption of volume fulfilled
