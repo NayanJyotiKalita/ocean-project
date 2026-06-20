@@ -6,7 +6,12 @@
   4. S3 bucket is provisioned with versioning enabled
   5. Each tenant is scoped with IAM roles to enforce access boundaries
   6. Strict security groups and NACLs are configured to isolate the traffic between tenant environments
+---
+---
 
+<img width="879" height="783" alt="image" src="https://github.com/user-attachments/assets/f601a734-a8c0-4930-bf35-a56dbe663e52" />
+
+---
 ---
 
 # 2. Multi-Tenancy Architecture
